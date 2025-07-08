@@ -27,8 +27,7 @@ echo "設定ファイル '$CONFIG_FILE' を読み込んでバックアップを�
 echo "--------------------------------------------------"
 
 # CSVファイルを1行ずつ読み込む（ヘッダーと空行は無視）
-grep -v -e '^#' -e '^
- "$CONFIG_FILE" | while IFS=, read -r SOURCE_DIR DEST_DIR DELETE_FLAG MOVE_FLAG
+grep -v -e '^#' -e '^$' "$CONFIG_FILE" | while IFS=, read -r SOURCE_DIR DEST_DIR DELETE_FLAG MOVE_FLAG
 do
     # 前後の空白を削除
     SOURCE_DIR=$(echo "$SOURCE_DIR" | xargs)
@@ -55,7 +54,7 @@ do
 
     if [[ "$MOVE_FLAG" == "true" ]]; then
         RSYNC_OPTIONS="$RSYNC_OPTIONS --remove-source-files"
-        DESCRIPTION="'$DESCRIPTION' 後に元ファイルを削除（移動）します"
+        DESCRIPTION=""$DESCRIPTION" 後に元ファイルを削除（移動）します"
         echo -e "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m"
     fi
 
