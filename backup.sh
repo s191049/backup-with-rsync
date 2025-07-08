@@ -149,8 +149,9 @@ do
         RSYNC_OPTIONS="$RSYNC_OPTIONS --remove-source-files"
         DESCRIPTION=""$DESCRIPTION" 後に元ファイルを削除（移動）します"
         if [[ "$CONFIRM_MOVE_MODE" == "true" ]]; then
-            echo -e "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m"
-            read -p "続行しますか？ (y/N): " -n 1 -r
+            printf "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m\n"
+            printf "続行しますか？ (y/N): "
+            read -n 1 -r
             echo
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 echo "移動モードでの処理をキャンセルしました。"
