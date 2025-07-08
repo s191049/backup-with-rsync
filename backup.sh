@@ -53,8 +53,13 @@ check_for_updates() {
         return
     fi
 
+    if [ "$DEBUG" = true ]; then
+        echo "デバッグ: APIからの応答:"
+        echo "$LATEST_RELEASE"
+    fi
+
     LATEST_VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name // .name' | sed 's/^v//') # 'v'プレフィックスを削除
-    if [ -z "$LATEST_VERSION" ]; then
+    if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
         echo "エラー: 最新バージョン情報の解析に失敗しました。"
         return
     fi
