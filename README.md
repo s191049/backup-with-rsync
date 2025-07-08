@@ -59,7 +59,22 @@ chmod +x backup.sh
    cp backup_list.csv.sample backup_list.csv
    ```
 
-2. **バックアップ設定の編集**
+2. **自動更新設定の確認**
+
+   `backup_config.sh` ファイルを開き、自動更新の有効/無効を設定します。デフォルトでは有効になっています。
+
+   ```bash
+   # 自動更新機能を有効にするか (true/false)
+   AUTO_UPDATE_ENABLED=true
+
+   # 最新バージョン情報をチェックするURL (GitHubのリリースAPIなど)
+   UPDATE_CHECK_URL="https://api.github.com/repos/s191049/backup-with-rsync/releases/latest"
+   ```
+
+   - `AUTO_UPDATE_ENABLED`: `true` に設定すると、スクリプト実行時に新しいバージョンがないかチェックし、利用可能な場合は更新を促します。`false` に設定すると、自動更新チェックは行われません。
+   - `UPDATE_CHECK_URL`: 最新バージョン情報を取得するためのURLです。通常は変更する必要はありません。
+
+3. **バックアップ設定の編集**
 
    `backup_list.csv` を開き、バックアップしたいディレクトリの情報を記述します。ファイルの書式は以下の通りです。
 
@@ -100,7 +115,7 @@ chmod +x backup.sh
    user@remote-server:/var/log/syslog,/home/user/backup/syslog.log,false,false
    ```
 
-3. **バックアップの実行**
+4. **バックアップの実行**
 
    以下のコマンドを実行して、バックアップを開始します。
 
