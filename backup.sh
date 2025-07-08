@@ -59,7 +59,7 @@ check_for_updates() {
         return
     fi
 
-    if [[ "$(printf '%s\n' "$SCRIPT_VERSION" "$LATEST_VERSION" | sort -V | head -n 1)" != "$SCRIPT_VERSION" ]]; then
+    if [[ "$(printf '%s\n' "$SCRIPT_VERSION" "$LATEST_VERSION" | sort -V | tail -n 1)" != "$SCRIPT_VERSION" ]]; then
         echo -e "\n--------------------------------------------------"
         echo -e "\033[0;32m新しいバージョン ($LATEST_VERSION) が利用可能です！\033[0m"
         echo "現在のバージョン: $SCRIPT_VERSION"
