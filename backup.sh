@@ -64,7 +64,8 @@ check_for_updates() {
         echo -e "\033[0;32m新しいバージョン ($LATEST_VERSION) が利用可能です！\033[0m"
         echo "現在のバージョン: $SCRIPT_VERSION"
         echo "ダウンロードURL: $(echo "$LATEST_RELEASE" | jq -r '.html_url')"
-        read -p "今すぐ更新しますか？ (y/N): " -n 1 -r
+        printf "今すぐ更新しますか？ [y/N]: "
+        read -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             perform_update "$LATEST_VERSION"
