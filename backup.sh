@@ -15,6 +15,78 @@ fi
 
 # --- 定数定義 ---
 CONFIG_FILE="backup_list.csv"
+SCRIPT_VERSION="0.1.0" # スクリプトのバージョン
+
+# --- 関数定義 ---
+
+# 最新バージョンをチェックし、更新を促す
+check_for_updates() {
+    if [ -z "$UPDATE_CHECK_URL" ]; then
+        echo "警告: UPDATE_CHECK_URLが設定されていません。自動更新チェックをスキップします。"
+        return
+    fi
+
+    if ! command -v curl &> /dev/null; then
+        echo "警告: curlがインストールされていません。自動更新チェックをスキップします。"
+        return
+    fi
+    if ! command -v jq &> /dev/null; then
+        echo "警告: jqがインストールされていません。自動更新チェックをスキップします。"
+        echo "最新バージョンチェックにはjqが必要です。インストールしてください: sudo apt install jq"
+        return
+    fi
+
+    echo "最新バージョンをチェックしています..."
+    LATEST_RELEASE=$(curl -s "$UPDATE_CHECK_URL")
+    if [ $? -ne 0 ]; then
+        echo "エラー: 最新リリース情報の取得に失敗しました。"
+        return
+    fi
+
+    LATEST_VERSION=$(echo "$LATEST_RELEASE" | jq -r '.tag_name // .name' | sed 's/^v//') # 'v'プレフィックスを削除
+    if [ -z "$LATEST_VERSION" ]; then
+        echo "エラー: 最新バージョン情報の解析に失敗しました。"
+        return
+    fi
+
+    if [[ "$(printf '%s\n' "$SCRIPT_VERSION" "$LATEST_VERSION" | sort -V | head -n 1)" != "$SCRIPT_VERSION" ]]; then
+        echo -e "\n--------------------------------------------------"
+        echo -e "\033[0;32m新しいバージョン ($LATEST_VERSION) が利用可能です！\033[0m"
+        echo "現在のバージョン: $SCRIPT_VERSION"
+        echo "ダウンロードURL: $(echo "$LATEST_RELEASE" | jq -r '.html_url')"
+        read -p "今すぐ更新しますか？ (y/N): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            perform_update "$LATEST_VERSION"
+        fi
+        echo "--------------------------------------------------"
+    else
+        echo "スクリプトは最新バージョンです ($SCRIPT_VERSION)。"
+    fi
+}
+
+# スクリプトを更新する
+perform_update() {
+    local LATEST_VERSION_TAG="$1"
+    local SCRIPT_URL="https://raw.githubusercontent.com/s191049/backup-with-rsync/$LATEST_VERSION_TAG/backup.sh"
+    local TEMP_SCRIPT="/tmp/backup.sh.new"
+
+    echo "スクリプトを更新しています..."
+    if curl -s -L "$SCRIPT_URL" -o "$TEMP_SCRIPT"; then
+        if [ -s "$TEMP_SCRIPT" ]; then # ダウンロードされたファイルが空でないことを確認
+            chmod +x "$TEMP_SCRIPT"
+            mv "$TEMP_SCRIPT" "$(dirname "$0")"/backup.sh"
+            echo -e "\033[0;32mスクリプトがバージョン $LATEST_VERSION_TAG に更新されました！\033[0m"
+            echo "更新を適用するため、スクリプトを再実行してください。"
+            exit 0 # 更新後、現在のスクリプトは終了
+        else
+            echo "エラー: ダウンロードされたスクリプトファイルが空です。"
+            rm -f "$TEMP_SCRIPT"
+        fi
+    else
+        echo "エラー: 新しいスクリプトのダウンロードに失敗しました。"
+    fi
+}
 
 # --- 事前チェック ---
 
@@ -29,6 +101,11 @@ fi
 if ! command -v rsync &> /dev/null; then
     echo "エラー: rsyncがインストールされていません。スクリプトを実行するにはrsyncをインストールしてください。"
     exit 1
+fi
+
+# 自動更新チェック
+if [[ "$AUTO_UPDATE_ENABLED" == "true" ]]; then
+    check_for_updates
 fi
 
 # --- バックアップ処理ループ ---
