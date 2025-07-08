@@ -25,7 +25,7 @@ fi
 
 # --- 定数定義 ---
 CONFIG_FILE="backup_list.csv"
-SCRIPT_VERSION="0.0.1" # スクリプトのバージョン
+SCRIPT_VERSION="0.2.0" # スクリプトのバージョン
 
 # --- 関数定義 ---
 
@@ -65,7 +65,7 @@ check_for_updates() {
         echo "現在のバージョン: $SCRIPT_VERSION"
         echo "ダウンロードURL: $(echo "$LATEST_RELEASE" | jq -r '.html_url')"
         printf "今すぐ更新しますか？ [y/N]: "
-        read -n 1 -r
+        read -n 1 -r </dev/tty
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             perform_update "$LATEST_VERSION"
@@ -150,7 +150,7 @@ do
         if [[ "$CONFIRM_MOVE_MODE" == "true" ]]; then
             printf "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m\n"
             printf "続行しますか？ [y/N]: "
-            read -n 1 -r
+            read -n 1 -r </dev/tty
             echo
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 echo "移動モードでの処理をキャンセルしました。"
