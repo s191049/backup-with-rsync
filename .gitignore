@@ -1,2 +1,20 @@
 backup_list.csv
 backup_config.sh
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.bak
+*~
+#*#
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.idea/
+.vscode/

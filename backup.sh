@@ -4,13 +4,23 @@
 # Linux、およびWSLやGit Bashを導入したWindowsで動作します。
 
 # --- 設定ファイルの読み込み ---
-CONFIG_FILE_PATH="$(dirname "$0")"/backup_config.sh
+CONFIG_FILE_NAME="backup_config.sh"
+CONFIG_FILE_SAMPLE_NAME="backup_config.sh.sample"
+CONFIG_FILE_PATH="$(dirname "$0")"/$CONFIG_FILE_NAME
+CONFIG_FILE_SAMPLE_PATH="$(dirname "$0")"/$CONFIG_FILE_SAMPLE_NAME
+
+# 設定ファイルが存在しない場合はサンプルからコピー
+if [ ! -f "$CONFIG_FILE_PATH" ]; then
+    echo "設定ファイルが見つかりません: $CONFIG_FILE_PATH。サンプルからコピーします。"
+    cp "$CONFIG_FILE_SAMPLE_PATH" "$CONFIG_FILE_PATH"
+fi
+
+# 設定ファイルを読み込み
 if [ -f "$CONFIG_FILE_PATH" ]; then
     source "$CONFIG_FILE_PATH"
 else
-    echo "警告: 設定ファイルが見つかりません: $CONFIG_FILE_PATH。デフォルト設定を使用します。"
-    AUTO_UPDATE_ENABLED=false
-    # UPDATE_CHECK_URL=""
+    echo "エラー: 設定ファイルの読み込みに失敗しました: $CONFIG_FILE_PATH。スクリプトを終了します。"
+    exit 1
 fi
 
 # --- 定数定義 ---

@@ -61,7 +61,15 @@ chmod +x backup.sh
 
 2. **自動更新設定の確認**
 
-   `backup_config.sh` ファイルを開き、自動更新の有効/無効を設定します。デフォルトでは有効になっています。
+   まず、`backup_config.sh.sample` ファイルをコピーして、`backup_config.sh` という名前のファイルを作成します。
+
+   ```bash
+   cp backup_config.sh.sample backup_config.sh
+   ```
+
+   `backup_config.sh` はGitの追跡対象から外れているため、自由に設定を変更できます。
+
+   次に、`backup_config.sh` を開き、自動更新の有効/無効や、移動モードの確認プロンプトの設定を行います。デフォルトでは自動更新が有効、移動モードの確認プロンプトが表示されるようになっています。
 
    ```bash
    # 自動更新機能を有効にするか (true/false)
@@ -69,10 +77,14 @@ chmod +x backup.sh
 
    # 最新バージョン情報をチェックするURL (GitHubのリリースAPIなど)
    UPDATE_CHECK_URL="https://api.github.com/repos/s191049/backup-with-rsync/releases/latest"
+
+   # 移動モード実行前に確認プロンプトを表示するか (true/false)
+   CONFIRM_MOVE_MODE=true
    ```
 
    - `AUTO_UPDATE_ENABLED`: `true` に設定すると、スクリプト実行時に新しいバージョンがないかチェックし、利用可能な場合は更新を促します。`false` に設定すると、自動更新チェックは行われません。
    - `UPDATE_CHECK_URL`: 最新バージョン情報を取得するためのURLです。通常は変更する必要はありません。
+   - `CONFIRM_MOVE_MODE`: `true` に設定すると、移動モード（バックアップ元ファイルを削除するオプション）が有効な場合に、実行前に確認プロンプトを表示します。`false` に設定すると、確認プロンプトなしで実行されます。
 
 3. **バックアップ設定の編集**
 
