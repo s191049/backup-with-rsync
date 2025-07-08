@@ -3,6 +3,16 @@
 # backup_list.csv ファイルを読み込んで、複数のディレクトリをrsyncでバックアップします。
 # Linux、およびWSLやGit Bashを導入したWindowsで動作します。
 
+# --- 設定ファイルの読み込み ---
+CONFIG_FILE_PATH="$(dirname "$0")"/backup_config.sh
+if [ -f "$CONFIG_FILE_PATH" ]; then
+    source "$CONFIG_FILE_PATH"
+else
+    echo "警告: 設定ファイルが見つかりません: $CONFIG_FILE_PATH。デフォルト設定を使用します。"
+    AUTO_UPDATE_ENABLED=false
+    # UPDATE_CHECK_URL=""
+fi
+
 # --- 定数定義 ---
 CONFIG_FILE="backup_list.csv"
 
