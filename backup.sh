@@ -25,7 +25,7 @@ fi
 
 # --- 定数定義 ---
 CONFIG_FILE="backup_list.csv"
-SCRIPT_VERSION="0.1.0" # スクリプトのバージョン
+SCRIPT_VERSION="0.0.1" # スクリプトのバージョン
 
 # --- 関数定義 ---
 
