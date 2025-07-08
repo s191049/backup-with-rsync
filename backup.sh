@@ -133,8 +133,6 @@ do
     DELETE_FLAG=$(echo "$DELETE_FLAG" | xargs)
     MOVE_FLAG=$(echo "$MOVE_FLAG" | xargs)
 
-    
-
     # rsyncのオプションを組み立て
     RSYNC_OPTIONS="-avh"
     DESCRIPTION="バックアップ"
@@ -148,7 +146,7 @@ do
 
     if [[ "$MOVE_FLAG" == "true" ]]; then
         RSYNC_OPTIONS="$RSYNC_OPTIONS --remove-source-files"
-        DESCRIPTION=""$DESCRIPTION" 後に元ファイルを削除（移動）します"
+        DESCRIPTION="$DESCRIPTION 後に元ファイルを削除（移動）します"
         if [[ "$CONFIRM_MOVE_MODE" == "true" ]]; then
             printf "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m\n"
             printf "続行しますか？ [y/N]: "
@@ -167,12 +165,21 @@ do
     echo "  元: $SOURCE_DIR"
     echo "  先: $DEST_DIR"
 
-    
+    # パスの存在チェック
+    if [[ ! -e "$SOURCE_DIR" ]]; then
+        echo "エラー: バックアップ元が見つかりません: $SOURCE_DIR。スキップします。"
+        echo "--------------------------------------------------"
+        continue
+    fi
 
     # rsyncの実行
     rsync $RSYNC_OPTIONS "$SOURCE_DIR" "$DEST_DIR"
 
-    echo "完了しました。"
+    if [ $? -ne 0 ]; then
+        echo "エラー: バックアップ処理中に問題が発生しました。"
+    else
+        echo "完了しました。"
+    fi
     echo "--------------------------------------------------"
 done
 
