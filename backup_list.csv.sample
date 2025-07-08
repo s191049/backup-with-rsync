@@ -1,0 +1,20 @@
+# これはバックアップ設定のサンプルファイルです。
+# このファイルを 'backup_list.csv' という名前にコピーして編集してください。
+#
+# 書式:
+# バックアップ元ディレクトリ,バックアップ先ディレクトリ,削除オプション(true/false)
+#
+# 削除オプション:
+#   true: バックアップ元にないファイルを、バックアップ先から削除します。
+#   false (または空欄): バックアップ先のファイルは削除しません。
+
+# --- 設定例 ---
+
+# ホームディレクトリのドキュメントを、外付けHDDにバックアップ（同期）する
+# /home/user/Documents,/media/user/backup_hdd/Documents,true
+
+# 写真フォルダをNASにバックアップ（追加のみ）する
+# /home/user/Pictures,/mnt/nas/Pictures,false
+
+# Windowsのデスクトップ（WSLからアクセス）をバックアップする
+# /mnt/c/Users/YourUser/Desktop,/mnt/d/backup/Desktop,true
