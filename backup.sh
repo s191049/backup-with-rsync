@@ -86,7 +86,7 @@ perform_update() {
     if curl -s -L "$SCRIPT_URL" -o "$TEMP_SCRIPT"; then
         if [ -s "$TEMP_SCRIPT" ]; then # ダウンロードされたファイルが空でないことを確認
             chmod +x "$TEMP_SCRIPT"
-            mv "$TEMP_SCRIPT" "$(dirname "$0")"/backup.sh"
+            mv "$TEMP_SCRIPT" "$(dirname "$0")/backup.sh"
             echo -e "\033[0;32mスクリプトがバージョン $LATEST_VERSION_TAG に更新されました！\033[0m"
             echo "更新を適用するため、スクリプトを再実行してください。"
             exit 0 # 更新後、現在のスクリプトは終了
