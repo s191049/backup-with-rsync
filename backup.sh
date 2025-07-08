@@ -58,11 +58,10 @@ do
     echo "  元: $SOURCE_DIR"
     echo "  先: $DEST_DIR"
 
-    # バックアップ先ディレクトリが存在しない場合は作成
-    mkdir -p "$DEST_DIR"
+    
 
     # rsyncの実行
-    rsync $RSYNC_OPTIONS "$SOURCE_DIR/" "$DEST_DIR/"
+    rsync $RSYNC_OPTIONS "$SOURCE_DIR" "$DEST_DIR"
 
     echo "完了しました。"
     echo "--------------------------------------------------"

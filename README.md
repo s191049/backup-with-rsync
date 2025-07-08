@@ -28,8 +28,10 @@ Linux環境および、WSL (Windows Subsystem for Linux) や Git Bash を導入�
    # バックアップ元,バックアップ先,削除オプション,移動オプション
    ```
 
-   - **バックアップ元**: バックアップしたいフォルダの絶対パス。
-   - **バックアップ先**: バックアップを保存したいフォルダの絶対パス。
+   - **バックアップ元/先**: 
+     - **ディレクトリの中身をバックアップしたい場合**: パスの末尾に `/` を付けてください (例: `/path/to/dir/`)
+     - **ディレクトリ自体をバックアップしたい場合**: パスの末尾に `/` を付けないでください (例: `/path/to/dir`)
+     - **ファイルをバックアップしたい場合**: ファイル名まで含めて指定し、末尾に `/` を付けないでください (例: `/path/to/file.txt`)
    - **削除オプション** (`true`/`false`):
      - `true`: バックアップ元にないファイルをバックアップ先から削除します（同期）。
      - `false` (または空欄): バックアップ先のファイルは削除しません（追加）。
@@ -43,11 +45,20 @@ Linux環境および、WSL (Windows Subsystem for Linux) や Git Bash を導入�
 
    **設定例:**
    ```csv
-   # Documentsフォルダを外付けHDDに同期する（元ファイルは保持）
-   /home/user/Documents,/media/user/backup_hdd/Documents,true,false
+   # Documentsフォルダの中身を外付けHDDに同期する（元ファイルは保持）
+   /home/user/Documents/,/media/user/backup_hdd/Documents/,true,false
+
+   # Picturesフォルダ自体をNASにバックアップする（古い写真は消さない）
+   /home/user/Pictures,/mnt/nas/Pictures,false,false
 
    # Downloadsフォルダの中身をアーカイブ用ディスクに移動する（元ファイルは削除）
-   /home/user/Downloads,/mnt/archive/Downloads,true,true
+   /home/user/Downloads/,/mnt/archive/Downloads/,true,true
+
+   # 特定のファイルをバックアップする
+   /home/user/notes.txt,/mnt/backup/my_notes.txt,false,false
+
+   # リモートのファイルをローカルにバックアップする
+   user@remote-server:/var/log/syslog,/home/user/backup/syslog.log,false,false
    ```
 
 3. **バックアップの実行**
