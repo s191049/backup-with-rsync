@@ -2,19 +2,27 @@
 # このファイルを 'backup_list.csv' という名前にコピーして編集してください。
 #
 # 書式:
-# バックアップ元ディレクトリ,バックアップ先ディレクトリ,削除オプション(true/false)
+# バックアップ元ディレクトリ,バックアップ先ディレクトリ,削除オプション(true/false),移動オプション(true/false)
 #
-# 削除オプション:
-#   true: バックアップ元にないファイルを、バックアップ先から削除します。
-#   false (または空欄): バックアップ先のファイルは削除しません。
+# 各オプションの説明:
+#   - 削除オプション:
+#     - true: バックアップ元にないファイルを、バックアップ先から削除します（同期）。
+#     - false (または空欄): バックアップ先のファイルは削除しません（追加）。
+#   - 移動オプション:
+#     - true: バックアップ成功後、バックアップ元のファイルを削除します。これは「移動」に相当する危険な操作です。
+#     - false (または空欄): バックアップ元のファイルは保持されます。
+#
+# !!! 警告 !!!
+# 移動オプションを true にすると、バックアップ元のファイルが完全に削除されます。
+# 意図しないデータ損失を防ぐため、このオプションは慎重に使用してください。
 
 # --- 設定例 ---
 
 # ホームディレクトリのドキュメントを、外付けHDDにバックアップ（同期）する
-# /home/user/Documents,/media/user/backup_hdd/Documents,true
+# /home/user/Documents,/media/user/backup_hdd/Documents,true,false
 
 # 写真フォルダをNASにバックアップ（追加のみ）する
-# /home/user/Pictures,/mnt/nas/Pictures,false
+# /home/user/Pictures,/mnt/nas/Pictures,false,false
 
-# Windowsのデスクトップ（WSLからアクセス）をバックアップする
-# /mnt/c/Users/YourUser/Desktop,/mnt/d/backup/Desktop,true
+# ダウンロードフォルダの中身を、アーカイブ用ディスクに「移動」する
+# /home/user/Downloads,/mnt/archive/Downloads,true,true

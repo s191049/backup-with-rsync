@@ -28,12 +28,13 @@ echo "--------------------------------------------------"
 
 # CSVファイルを1行ずつ読み込む（ヘッダーと空行は無視）
 grep -v -e '^#' -e '^
- "$CONFIG_FILE" | while IFS=, read -r SOURCE_DIR DEST_DIR DELETE_FLAG
+ "$CONFIG_FILE" | while IFS=, read -r SOURCE_DIR DEST_DIR DELETE_FLAG MOVE_FLAG
 do
     # 前後の空白を削除
     SOURCE_DIR=$(echo "$SOURCE_DIR" | xargs)
     DEST_DIR=$(echo "$DEST_DIR" | xargs)
     DELETE_FLAG=$(echo "$DELETE_FLAG" | xargs)
+    MOVE_FLAG=$(echo "$MOVE_FLAG" | xargs)
 
     # バックアップ元ディレクトリの存在チェック
     if [ ! -d "$SOURCE_DIR" ]; then
@@ -43,13 +44,22 @@ do
 
     # rsyncのオプションを組み立て
     RSYNC_OPTIONS="-avh"
+    DESCRIPTION="バックアップ"
+
     if [[ "$DELETE_FLAG" == "true" ]]; then
         RSYNC_OPTIONS="$RSYNC_OPTIONS --delete"
-        echo "バックアップを実行します（削除オプション有効）:"
+        DESCRIPTION="$DESCRIPTION（同期）"
     else
-        echo "バックアップを実行します（削除オプション無効）:"
+        DESCRIPTION="$DESCRIPTION（追加）"
     fi
 
+    if [[ "$MOVE_FLAG" == "true" ]]; then
+        RSYNC_OPTIONS="$RSYNC_OPTIONS --remove-source-files"
+        DESCRIPTION="'$DESCRIPTION' 後に元ファイルを削除（移動）します"
+        echo -e "\033[0;31m[警告] 移動モードが有効です。処理後に元のファイルが削除されます。\033[0m"
+    fi
+
+    echo "処理を開始します: $DESCRIPTION"
     echo "  元: $SOURCE_DIR"
     echo "  先: $DEST_DIR"
 
