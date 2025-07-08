@@ -19,7 +19,7 @@ Linux環境および、WSL (Windows Subsystem for Linux) や Git Bash を導入�
 まず、このリポジトリをローカルにクローンします。
 
 ```bash
-git clone https://github.com/your-username/backup-with-rsync.git
+git clone https://github.com/s191049/backup-with-rsync.git
 cd backup-with-rsync
 ```
 
