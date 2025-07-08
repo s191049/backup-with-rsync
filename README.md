@@ -60,6 +60,34 @@ Linux環境および、WSL (Windows Subsystem for Linux) や Git Bash を導入�
 
    スクリプトは `backup_list.csv` の内容を上から順に実行します。
 
+- **リモートバックアップ**: SFTP/SSH経由でリモートサーバー上のファイルやディレクトリをバックアップ元またはバックアップ先として指定できます。
+
+## リモートバックアップの利用
+
+`rsync` はSSHプロトコルを利用してリモートサーバーとの間でファイルを転送できます。これにより、SFTPやSSHでアクセス可能なサーバー上のファイルをバックアップ対象とすることができます。
+
+### パスの指定方法
+
+`backup_list.csv` 内で、バックアップ元またはバックアップ先にリモートパスを指定する場合、以下の形式を使用します。
+
+```
+ユーザー名@ホスト名:/path/to/directory
+```
+
+**例:**
+- ローカルの `Documents` フォルダをリモートサーバーの `/backup/docs` にバックアップ:
+  `/home/user/Documents,user@remote-server:/backup/docs,true,false`
+- リモートサーバーの `/var/log` をローカルの `backup/logs` にバックアップ:
+  `user@remote-server:/var/log,/home/user/backup/logs,false,false`
+
+### 認証について
+
+リモートサーバーへの接続には、SSHキー認証の利用を強く推奨します。これにより、スクリプト実行時にパスワード入力を求められることなく、自動的にバックアップを実行できます。
+
+SSHキー認証を設定するには、お使いのデバイスの公開鍵をリモートサーバーの `~/.ssh/authorized_keys` ファイルに追加する必要があります。通常は `ssh-copy-id user@remote-server` コマンドを使用すると便利です。
+
+---
+
 ## 今後の開発予定
 
 - [ ] ログ機能の追加

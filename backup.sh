@@ -35,11 +35,7 @@ do
     DELETE_FLAG=$(echo "$DELETE_FLAG" | xargs)
     MOVE_FLAG=$(echo "$MOVE_FLAG" | xargs)
 
-    # バックアップ元ディレクトリの存在チェック
-    if [ ! -d "$SOURCE_DIR" ]; then
-        echo "[スキップ] バックアップ元が見つかりません: $SOURCE_DIR"
-        continue
-    fi
+    
 
     # rsyncのオプションを組み立て
     RSYNC_OPTIONS="-avh"
