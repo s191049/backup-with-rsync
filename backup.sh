@@ -69,7 +69,8 @@ check_for_updates() {
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             perform_update "$LATEST_VERSION"
         fi
-        echo "--------------------------------------------------"    else
+        echo "--------------------------------------------------"
+    else
         echo "スクリプトは最新バージョンです ($SCRIPT_VERSION)。"
     fi
 }
