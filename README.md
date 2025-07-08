@@ -10,6 +10,45 @@ Linux環境および、WSL (Windows Subsystem for Linux) や Git Bash を導入�
 - **柔軟な削除オプション**: バックアップ元で削除されたファイルを、バックアップ先からも削除するかどうか（ミラーリングするかどうか）を設定ごとに選択できます。
 - **移動モード**: バックアップ完了後に、元のファイルを削除する「移動モード」をサポートします。
 
+## セットアップ
+
+このプロジェクトを使用するには、以下の手順に従ってください。
+
+### 1. リポジトリのクローン
+
+まず、このリポジトリをローカルにクローンします。
+
+```bash
+git clone https://github.com/your-username/backup-with-rsync.git
+cd backup-with-rsync
+```
+
+### 2. 前提条件
+
+このスクリプトは `rsync` コマンドと `bash` シェルに依存しています。ほとんどのLinux環境にはこれらがデフォルトでインストールされていますが、もしインストールされていない場合は、お使いのOSのパッケージマネージャーを使用してインストールしてください。
+
+**Debian/Ubuntu:**
+```bash
+sudo apt update
+sudo apt install rsync
+```
+
+**CentOS/RHEL:**
+```bash
+sudo yum install rsync
+```
+
+**Windows (WSLまたはGit Bash):**
+WSLを使用している場合は、上記Linuxのコマンドを使用できます。Git Bashを使用している場合は、Git for Windowsのインストール時に`rsync`がバンドルされていることがあります。
+
+### 3. 実行権限の付与
+
+`backup.sh` スクリプトを実行可能にするために、権限を付与します。
+
+```bash
+chmod +x backup.sh
+```
+
 ## 使い方
 
 1. **設定ファイルの準備**
