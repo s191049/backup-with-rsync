@@ -24,8 +24,16 @@ else
 fi
 
 # --- 定数定義 ---
-CONFIG_FILE="backup_list.csv"
-SCRIPT_VERSION="0.2.0" # スクリプトのバージョン
+SCRIPT_VERSION="0.2.1" # スクリプトのバージョン
+
+# --- 引数処理 ---
+# コマンドライン引数で設定ファイルが指定されていればそれを使う
+# 指定されていなければ、デフォルトの "backup_list.csv" を使う
+if [ -n "$1" ]; then
+    CONFIG_FILE="$1"
+else
+    CONFIG_FILE="backup_list.csv"
+fi
 
 # --- 関数定義 ---
 
